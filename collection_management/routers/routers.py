@@ -1,0 +1,4 @@
+from rest_framework.routers import DefaultRouter
+from collection_management.viewsets.viewsets import CollectionManagementViewSet
+router=DefaultRouter()
+router.register('collection_management',CollectionManagementViewSet,basename='collection_management')

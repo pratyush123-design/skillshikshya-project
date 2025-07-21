@@ -53,7 +53,10 @@ INSTALLED_APPS = [
     'query_management',
     'home_page',
     'review_management',
-    'faqs'
+    'faqs',
+    'login',
+    'drf_yasg',
+    'logout'
 ]
 
 MIDDLEWARE = [
@@ -82,6 +85,31 @@ TEMPLATES = [
         },
     },
 ]
+REST_FRAMEWORK = {
+    # 1. Use JWT for authentication
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+    
+    # 2. Require user to be authenticated by default
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    
+    # 3. Pagination settings using PageNumberPagination
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
+
+    # 4. Enable filtering, search, and ordering
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend',
+        'rest_framework.filters.SearchFilter',
+        'rest_framework.filters.OrderingFilter',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+    'rest_framework.permissions.AllowAny',
+]
+}
 
 WSGI_APPLICATION = 'skillshikshya_project.wsgi.application'
 

@@ -1,5 +1,5 @@
 """
-URL configuration for skillshikshya_project project.
+URL configuration for first_api project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/5.2/topics/http/urls/
@@ -15,8 +15,39 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from skillshikshya_project.routers.routers import router  
+
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+
+from rest_framework import permissions
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+
+schema_view = get_schema_view(
+    openapi.Info(
+        title="Your API",
+        default_version='v1',
+        description="API documentation",
+        contact=openapi.Contact(email="your@email.com"),
+        license=openapi.License(name="BSD License"),
+    ),
+    public=True,
+    permission_classes=(permissions.AllowAny,),
+)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-]
+    path('api/', include(router.urls)),
+    path('api-auth/',include('rest_framework.urls')),
+    path('api/login/', include('login.urls')),
+    path('api/login/', include('login.urls')),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),  # to get token
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),  # to refresh token
+     path('', include('logout.urls')),
+
+    # Swagger documentation routes
+    path('', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+
+    ] 
